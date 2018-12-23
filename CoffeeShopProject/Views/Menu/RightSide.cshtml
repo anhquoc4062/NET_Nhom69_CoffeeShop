@@ -1,0 +1,51 @@
+﻿<div class="col-lg-3">
+    <div class="single-element-widget">
+        <h3 class="mb-30">LOẠI SẢN PHẨM</h3>
+        <ul class="list-group-cate">
+            <li id="filter-all" data-id="0" class="selected"><a href="#" style="font-weight:700">Tất cả</a></li>
+            @foreach (var parent in ViewBag.ListCate)
+            {
+
+                @if (parent.MaLoaiCha == 0)
+                {
+                    <li data-id="-1">
+                        <span style="font-weight: 700">@parent.TenLoai</span>
+                        <ul class="list-group-cate-child">
+                            @foreach (var child in ViewBag.ListCate)
+                            {
+                                if (child.MaLoaiCha == parent.MaLoai)
+                                {
+                                    <li data-id="@child.MaLoai"><a href="#">@child.TenLoai</a></li>
+                                }
+
+                            }
+                        </ul>
+
+                        
+
+                    </li>
+                }
+
+            }
+        </ul>
+
+    </div>
+    <div class="single-element-widget">
+        <h3 class="mb-30">ĐANG GIẢM GIÁ</h3>
+        <ul class="list-group-product">
+            @foreach (var item in ViewBag.ListDiscount)
+            {
+                <li>
+                    <a asp-controller="SingleProduct" asp-action="Index" asp-route-id="@item.MaThucDon">
+                        <img src="~/uploads/product/@item.HinhAnh" width="100" height="100">
+                        <h5>@item.TenThucDon</h5>
+                        <p>$@string.Format("{0:N2}", item.GetGiaKhuyenMai)  <del>$@string.Format("{0:N2}", item.Gia)</del></p>
+                    </a>
+
+                </li>
+            }
+
+        </ul>
+
+    </div>
+</div>

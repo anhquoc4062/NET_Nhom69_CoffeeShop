@@ -1,0 +1,82 @@
+﻿@using Microsoft.AspNetCore.Http
+<aside class="menu-sidebar d-none d-lg-block">
+    <div class="logo">
+        <a href="#">
+            <img src="~/images/icon/logo.png" alt="Cool Admin" />
+        </a>
+    </div>
+    <div class="menu-sidebar__content js-scrollbar1">
+        <nav class="navbar-sidebar">
+            <ul class="list-unstyled navbar__list">
+                @*<li class="has-sub">
+            <a class="js-arrow" href="#">
+                <i class="fas fa-tachometer-alt"></i>Dashboard
+            </a>
+            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                <li>
+                    <a href="index.html">Dashboard 1</a>
+                </li>
+                <li>
+                    <a href="index2.html">Dashboard 2</a>
+                </li>
+                <li>
+                    <a href="index3.html">Dashboard 3</a>
+                </li>
+                <li>
+                    <a href="index4.html">Dashboard 4</a>
+                </li>
+            </ul>
+        </li>*@
+                <li>
+                    <a asp-controller="Dashboard" asp-action="Index">
+                        <i class="fas fa-tachometer-alt"></i>Tổng quan
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="ProductAdmin" asp-action="Index">
+                        <i class="fas fa-coffee"></i>Thực đơn
+                    </a>
+                </li>
+                <li class="has-sub">
+                    <a class="js-arrow" href="#">
+                        <i class="fas fa-user"></i>Thông tin
+                    </a>
+                    <ul class="list-unstyled navbar__sub-list js-sub-list">
+                        @if (Context.Session.GetString("CREDENTITY_SESSION") == "qtv")
+                        {
+                            <li>
+                                <a asp-controller="EmployeeAdmin" asp-action="Index">Nhân viên</a>
+                            </li>
+                        }
+
+                        <li>
+                            <a asp-controller="CustomerAdmin" asp-action="Index">Khách Hàng</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a asp-controller="ReviewAdmin" asp-action="Index">
+                        <i class="fas fa-comment-alt"></i>Đánh giá người dùng
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="OrderAdmin" asp-action="Index">
+                        <i class="fa fa-shopping-cart"></i>Đơn hàng
+                    </a>
+                </li>
+                <li>
+                    <a href="https://app.purechat.com/" target="_blank">
+                        <i class="fas fa-comments"></i>Chat trực tuyến
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="TrangChu" asp-action="Index">
+                        <i class="fas fa-sign-out-alt"></i>Trở về trang chủ
+                    </a>
+                </li>
+
+
+            </ul>
+        </nav>
+    </div>
+</aside>

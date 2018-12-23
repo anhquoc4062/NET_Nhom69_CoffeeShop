@@ -1,0 +1,111 @@
+﻿@model ThucDonViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Layout/User/Layout.cshtml";
+}
+@using Microsoft.AspNetCore.Http
+
+<section class="generic-banner relative">
+    <div class="container">
+        <div class="row height align-items-center justify-content-center">
+            <div class="col-lg-10">
+                <div class="generic-banner-content">
+                    <h2 class="text-white">CHI TIẾT THỰC ĐƠN</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Start video-sec Area -->
+<section class="video-sec-area pt-100" id="about">
+    <div class="container">
+        <div class="row justify-content-start align-items-center">
+            <div class="col-lg-6 video-right justify-content-center align-items-center d-flex">
+                <img class="img-fluid" src="~/uploads/product/@Model.HinhAnh" alt="">
+            </div>
+            <div class="col-lg-6 video-left">
+                <h1>@Model.TenThucDon</h1>
+                <h6>
+                    $@string.Format("{0:N2}", Model.GiaKhuyenMai)
+                    @if (Model.KhuyenMai != 0)
+                    {
+                        <del style="color: #bdc3c7; font-size: 15px">$@string.Format("{0:N2}", Model.Gia)</del>
+                    }
+                </h6>
+                <p>
+                    <span style="text-transform:uppercase; font-weight:bold; color: #262626">Thể loại:</span> @Model.TenLoai
+                </p>
+                <div id="exTab1">
+                    <ul class="nav nav-pills">
+                        <li class="active">
+                            <a href="#1a" data-toggle="tab">Mô tả</a>
+                        </li>
+                        <li>
+                            <a href="#2a" data-toggle="tab">Thông tin thêm</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content clearfix">
+                        <div class="tab-pane active" id="1a">
+                            <p>@Model.MoTa</p>
+                        </div>
+                        <div class="tab-pane" id="2a">
+                            <p>
+                                @if (Context.Session.GetString("USERNAME_SESSION") != null)
+                                {
+                                    <form asp-action="AddRating" asp-controller="SingleProduct" method="post">
+                                        <label>Lời nhận xét</label>
+                                        <input hidden value="@Model.MaThucDon" name="product_id"/>
+                                        <textarea style="margin-top: 0px; margin-bottom: 0px; height: 195px;" class="form-control" name="rating" placeholder="Nhập lời nhận xét..."></textarea>
+                                        <button class="btn btn-primary">GỬI ĐÁNH GIÁ</button>
+                                    </form>
+                                }else
+                                {
+                                    <div class="alert-login">
+                                        <p style="font-size: 15px; text-align: center">Để nhận xét về sản phẩm bạn phải đăng nhập</p>
+                                        <form asp-action="Index" asp-controller="Login">
+                                            <button class="btn btn-default">Đăng nhập</button>
+                                        </form>
+                                    </div>
+
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End video-sec Area -->
+@{
+    Html.RenderPartial("RatingArea");
+}
+
+<!-- Start Related Product -->
+<div class="related-product">
+    <div class="container">
+        <div class="row">
+            <h2>CÁC SẢN PHẨM CÙNG LOẠI</h2>
+        </div>
+
+        <div class="row">
+            @foreach (var product in ViewBag.CungLoai)
+            {
+                <div class="col-md-3 text-center">
+                    <div class="image-related" width="400" height="400">
+                        <img src="~/uploads/product/@product.HinhAnh" alt="" width="100%" height="100%">
+                        <div class="button-add-to-cart">
+                            <a href="#" data-id="@product.MaThucDon">THÊM VÀO GIỎ</a>
+                        </div>
+                    </div>
+                    <div class="content-related">
+                        <h5><a asp-action="Index" asp-controller="SingleProduct" asp-route-id="@product.MaThucDon">@product.TenThucDon</a></h5>
+                        <span class="price">$@string.Format("{0:N2}", product.GetGiaKhuyenMai)</span>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+<!-- End Related Product -->

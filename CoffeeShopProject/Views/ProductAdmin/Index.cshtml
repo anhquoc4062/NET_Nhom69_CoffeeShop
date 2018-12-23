@@ -1,0 +1,118 @@
+﻿@{
+    Layout = "~/Views/Layout/Admin/Layout.cshtml";
+    ViewData["Title"] = "List";
+}
+<div class="section__content section__content--p30">
+    <div class="container-fluid">
+        <!--TABLE CONTENT-->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- DATA TABLE -->
+                <h3 class="title-5 m-b-35">DANH SÁCH THỰC ĐƠN</h3>
+                <div class="table-data__tool">
+                    <div class="table-data__tool-left">
+                        <button class="au-btn au-btn-icon au-btn--green au-btn--small product_btn" data-action="Add" data-toggle="modal" data-target="#add_modal">
+                            <i class="zmdi zmdi-plus"></i>thêm
+                        </button>
+                        <div class="rs-select2--light rs-select2--md">
+                            <select class="js-select2 select2-hidden-accessible" name="property" tabindex="-1" aria-hidden="true" id="category_filter">
+                                <option value="-1" disabled>Lọc theo loại</option>
+                                <option class="selected" selected="selected" value="0">Tất cả</option>
+                                @foreach (var parent in ViewBag.ListCate)
+                                {
+                                    if (parent.MaLoaiCha == 0)
+                                    {
+                                        <optgroup label="@parent.TenLoai">
+                                            @foreach (var child in ViewBag.ListCate)
+                                            {
+                                                if (child.MaLoaiCha == parent.MaLoai)
+                                                {
+                                                    <option value="@child.MaLoai">@child.TenLoai</option>
+                                                }
+
+                                            }
+
+                                        </optgroup>
+                                    }
+
+                                }
+                            </select>
+                            <div class="dropDownSelect2"></div>
+                        </div>
+                    </div>
+                    <div class="table-data__tool-right">
+                        <!-- SEARCH BAR-->
+                        <div class="search_bar">
+                            <div container="container">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <form class="form-header search_bar" action="/Employee/Search" method="POST">
+                                            <input class="au-input au-input--xl" type="text" name="key_word" placeholder="Nhập tên sản phẩm..." id="search_input" />
+                                            <button class="au-btn--submit" type="submit" id="search_button" data-press-check="0">
+                                                <i class="zmdi zmdi-search"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END SEARCH BAR-->
+                    </div>
+                </div>
+
+                <div class="table-responsive table-responsive-data2">
+                    <table class="table table-data2">
+                        <thead>
+                            <tr>
+                                <th>ảnh</th>
+                                <th>tên thực đơn</th>
+                                <th>loại thực đơn</th>
+                                <th>giá</th>
+                                <th>khuyến mãi</th>
+                                <th>quản lý</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table_product_list">
+
+                            @foreach (var item in ViewBag.List)
+                            {
+                                <tr class="tr-shadow">
+                                    <td><img src="~/uploads/product/@item.HinhAnh" width="70" height="70" /></td>
+                                    <td>@item.TenThucDon</td>
+                                    <td>@item.TenLoai</td>
+                                    <td>$@string.Format("{0:N2}", item.Gia)</td>
+                                    <td>@item.KhuyenMai%</td>
+                                    <td>
+                                        <div class="table-data-feature">
+                                            <button class="product_btn item" data-placement="top" data-original-title="Edit" data-action="Edit" data-id="@item.MaThucDon" data-toggle="modal" data-target="#add_modal">
+                                                <i class="zmdi zmdi-edit"></i>
+                                            </button>
+                                            <button class="product_btn item" data-placement="top" data-original-title="Delete" data-action="Delete" data-id="@item.MaThucDon">
+                                                <i class="zmdi zmdi-delete"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="spacer"></tr>
+                            }
+
+                            <!--Không tìm thấy sản phẩm-->
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+                <ul id="pagination-demo" style="margin-top: 50px" classs="pagination-md"></ul>
+            </div>
+
+
+        </div>
+        <!--END TABLE CONTENT-->
+        
+
+    </div>
+</div>
+@{
+    Html.RenderPartial("ProductModal");
+}

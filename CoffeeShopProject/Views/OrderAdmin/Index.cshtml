@@ -1,0 +1,149 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Layout/Admin/Layout.cshtml";
+}
+
+<style>
+    #order_detail .modal-content {
+        height: 100%;
+        width: 1200px;
+        position: relative;
+        right: 170px;
+    }
+
+    #order_detail .table-data .table td {
+        border-bottom: 1px solid #d5d0d0;
+    }
+    .table-responsive.table-data {
+        height: 100%;
+        overflow: auto;
+    }
+    .table-responsive {
+        height: 1200px;
+    }
+</style>
+<div class="section__content section__content--p30">
+    <div class="container-fluid">
+        <h3 class="title-5 m-b-35">DANH SÁCH ĐƠN HÀNG</h3>
+        <div class="row m-t-30">
+            <div class="col-md-12">
+                <!-- DATA TABLE-->
+                <div class="table-responsive m-b-40">
+                    <table class="table table-borderless table-data3">
+                        <thead>
+                            <tr>
+                                <th>tên</th>
+                                <th>email</th>
+                                <th>trạng thái</th>
+                                <th>chi tiết</th>
+                                <th>ngày đặt</th>
+                                <th>tác vụ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.ListOrder)
+                            {
+                            <tr>
+                                <td>@item.TenKhachHang</td>
+                                <td>@item.Email</td>
+                                @if (item.TrangThai == 1)
+                                {
+                                    <td><a class="sucess" href="#" data-id="@item.MaGioHang">Đã xử lý</a></td>
+                                }
+                                else if (item.TrangThai == 0)
+                                {
+                                    <td><a class="fail" href="#" data-id="@item.MaGioHang">Đang xử lý</a></td>
+                                }
+                                else
+                                {
+                                    <td><a class="cancel" href="#" data-id="@item.MaGioHang">Đã hủy</a></td>
+                                }
+                                <td>
+                                    <button type="button" class="btn btn-primary detail_order_btn" data-toggle="modal" data-target="#order_detail" data-id-cart="@item.MaGioHang" data-id-customer="@item.MaKhachHang">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                                <td>@string.Format("{0:d}", item.NgayDat) </td>
+                                <td><a asp-action="RemoveOrder" asp-controller="OrderAdmin" asp-route-id="@item.MaGioHang" style="color: #c0392b"><i class="fas fa-trash-alt"></i></a></td>
+                            </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- END DATA TABLE-->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="order_detail" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="largeModalLabel">Order Detail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card-body card-block">
+                            <div class="form-group">
+                                <label for="vat" class=" form-control-label">Tên Khách Hàng</label>
+                                <input type="text" id="customer_name" value="Trịnh Hoàng Huy" class="form-control" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="postal-code" class=" form-control-label">Email</label>
+                                <input type="text" id="customer_email" value="huy.trinh1905@gmail.com" class="form-control" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="street" class=" form-control-label">Địa Chỉ</label>
+                                <input type="text" id="customer_address" value="351 Lạc Long Quân" class="form-control" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="city" class=" form-control-label">Tỉnh/Thành</label>
+                                <input type="text" id="customer_city" value="Hồ Chí Minh" class="form-control" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="country" class=" form-control-label">Số điện thoại</label>
+                                <input type="text" id="customer_tel" value="0906021727" class="form-control" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="table-responsive table-data">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <td>tên sản phẩm</td>
+                                        <td>số lượng</td>
+                                        <td>tổng cộng</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="order_detail">
+                                    <tr class="item">
+                                        <td>Cần sa</td>
+                                        <td>2</td>
+                                        <td>$788.34</td>
+                                    </tr>
+                                        <tr id="amount">
+                                            <td colspan="2" style="text-align: right; font-weight: bold">Tổng cộng:</td>
+                                            <td id="total_amount">$1777.90</td>
+                                        </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
